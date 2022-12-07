@@ -65,7 +65,7 @@ end
 def get_directories_part2(node, holder = [])
   return holder if node.nil? || !node.directory?
 
-  holder << node if node.size >= 268_565
+  holder << node if node.size >= 268_565 # See line 107
 
   node.children.each do |child|
     get_directories_part2(child, holder)
@@ -107,8 +107,11 @@ def main
   unused_space = total_space - head.size
   total = 0
 
-  directories = get_directories_part2(head).sort_by { |d| d.size }
-  puts directories[0].size
+  part2 = get_directories_part2(head).sort_by { |d| d.size }[0].size
+  puts part2
+
+  part1 = get_directories_part1(head).map(&:size).sum
+  puts part1
 end
 
 main
