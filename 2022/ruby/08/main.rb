@@ -37,7 +37,7 @@ def part2(grid)
     end
   end
 
-  p scenic_scores.map { |r| r.max }.max
+  puts "Part 2: #{scenic_scores.map { |r| r.max }.max}"
 end
 
 def get_scenic_score(row, col, grid)
@@ -154,7 +154,7 @@ end
 def main
   f = File.open(File.join(File.dirname(__FILE__), 'input.txt'))
   grid = create_grid(f)
-  # part1(grid)
+  part1(grid)
   part2(grid)
 end
 
