@@ -16,22 +16,31 @@ fn get_score(c: char) -> usize {
     alphabet.iter().position(|&x| x == c).unwrap() + 1
 }
 
-fn part1(line: &str) -> usize {
-    let mid = line.len() / 2;
-    let set1 = string_to_set(&line[0..mid]);
-    let set2 = string_to_set(&line[mid..(line.len())]);
-    let intersection: Vec<&char> = set1.intersection(&set2).collect();
-    let letter = intersection[0];
-    get_score(*letter)
+fn get_intersection(s1: &str, s2: &str) -> Vec<char> {
+    let set1 = string_to_set(s1);
+    let set2 = string_to_set(s2);
+
+    set1.intersection(&set2)
+        .map(|x: &char| x.to_owned())
+        .collect()
 }
 
-fn main() {
+fn part1(contents: &str) {
     let mut total = 0;
-    let contents = fs::read_to_string("input.txt").expect("Failed to read input file");
     for line in contents.lines() {
         let line = line.trim();
-        total += part1(line);
+        let mid = line.len() / 2;
+        let intersection = get_intersection(&line[0..mid], &line[mid..(line.len())]);
+        let letter = intersection[0];
+        total += get_score(letter);
     }
 
-    println!("Total: {}", total);
+    println!("Part 1: {}", total);
+}
+
+fn part2(contents: &str) {}
+
+fn main() {
+    let contents = fs::read_to_string("input.txt").expect("Failed to read input file");
+    part1(&contents);
 }
