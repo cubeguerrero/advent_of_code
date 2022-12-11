@@ -1,3 +1,16 @@
+class Item
+  attr_accessor :original_value, :current_value
+
+  def initialize(value:)
+    @original_value = value
+    @current_value = value
+  end
+
+  def reset
+    @current_value = @original_value
+  end
+end
+
 class Monkey
   attr_reader :name, :items, :operation, :operation_value, :divisible_by, :true_to, :false_to, :inspected_count
 
@@ -11,7 +24,7 @@ class Monkey
         information[:name] = num
       elsif line.include? 'Starting'
         _, nums = line.split(':')
-        information[:items] = nums.split(',').map { |i| i.strip.to_i }
+        information[:items] = nums.split(',').map { |i| Item.new(value: i.strip.to_i) }
       elsif line.include? 'Operation'
         _, operation, operation_value = line.split('=').last.split(' ')
         operation.strip!
@@ -55,10 +68,15 @@ class Monkey
     x.map do |item|
       @inspected_count += 1
       # start to worry
-      item = [item, operation_value].reduce(&operation)
-      # decrease worry
-      item /= 3
-      if item % divisible_by == 0
+      new_value = [item.current_value, operation_value].reduce(&operation)
+      item.current_value = new_value
+      # Part 1: decrease worry
+      # item.current_value = new_value / 3
+
+      # Part 2:
+      item.current_value = new_value % (2 * 3 * 5 * 7 * 11 * 13 * 17 * 19 * 23 * 29)
+
+      if item.current_value % divisible_by == 0
         [item, true_to]
       else
         [item, false_to]
@@ -67,11 +85,11 @@ class Monkey
   end
 
   def to_s
-    "Monkey #{name}: #{items.inspect}"
+    "Monkey #{name} inspected items #{@inspected_count} times."
   end
 
   def add_item(item)
-    items << item.to_i
+    items << item
   end
 
   def reset_items

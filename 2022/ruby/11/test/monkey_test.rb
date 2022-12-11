@@ -25,8 +25,9 @@ class MonkeyTest < Minitest::Test
     monkey = Monkey.parse(@input)
 
     assert monkey.name == 0
-    assert monkey.items.include? 79
-    assert monkey.items.include? 98
+    values = monkey.items.map(&:current_value)
+    assert values.include? 79
+    assert values.include? 98
     assert monkey.operation == :*
     assert monkey.operation_value == 19
     assert monkey.divisible_by == 23

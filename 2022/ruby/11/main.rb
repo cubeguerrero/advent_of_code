@@ -18,10 +18,12 @@ def main
         m.add_item(i)
       end
     end
+
+    puts monkeys
   end
 
   two_highest = monkeys.map { |m| m.inspected_count }.sort.last(2)
-  puts "Part 1: #{two_highest.reduce(&:*)}"
+  puts "#{two_highest.reduce(&:*)}"
 end
 
 main
